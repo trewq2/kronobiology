@@ -36,8 +36,14 @@ jobs:
 
       - name: Build frontend
         run: pnpm run build
-      - name: Create SPA fallback
-        run: cp dist/public/index.html dist/public/404.html
+      - name: Create Pages site directory
+        run: |
+              rm -rf _site
+              mkdir -p _site
+              cp -R dist/public/. _site/
+              cp _site/index.html _site/404.html
+              echo "--- Pages site root ---"
+              ls -la _site
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

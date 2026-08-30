@@ -7,7 +7,8 @@ export default function NotFound() {
   const [, setLocation] = useLocation();
 
   const handleGoHome = () => {
-    setLocation("/");
+    const isGitHubPagesProject = window.location.pathname.startsWith("/kronobiology");
+    setLocation(isGitHubPagesProject ? "/kronobiology/" : "/");
   };
 
   return (

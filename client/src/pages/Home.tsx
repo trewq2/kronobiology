@@ -150,9 +150,9 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
 }
 
 export default function Home() {
-  const [name, setName] = useState("Varga Katalin");
-  const [birthDate, setBirthDate] = useState("1973-04-10");
-  const [result, setResult] = useState<ChronobiologyResult | null>(() => calculateChronobiology("Varga Katalin", "1973-04-10"));
+  const [name, setName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [result, setResult] = useState<ChronobiologyResult | null>(null);
   const [error, setError] = useState("");
   const [showAnalysis, setShowAnalysis] = useState(false);
 

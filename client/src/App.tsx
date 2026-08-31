@@ -7,6 +7,11 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 
 function Router() {
+  const pathname = window.location.pathname;
+  if (pathname === "/kronobiology" || pathname === "/kronobiology/") {
+    return <Home />;
+  }
+
   return (
     <Switch>
       <Route path={"/"} component={Home} />

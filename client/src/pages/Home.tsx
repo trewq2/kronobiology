@@ -50,29 +50,30 @@ function ContourDiagram({ result }: { result: ChronobiologyResult }) {
         <CircleHelp size={18} strokeWidth={1.5} />
       </div>
       <div className="contour-visual contour-classic">
-        <svg viewBox="0 0 520 540" role="img" aria-label="Eredeti program szerinti agyfélteke- és testkontúr">
+        <svg viewBox="0 0 520 570" role="img" aria-label="Eredeti program szerinti agyfélteke- és testkontúr">
           <defs>
             <marker id="contour-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#111" /></marker>
           </defs>
-          <path d="M190 28 C145 35 130 105 151 151 C162 174 178 190 210 214 C218 220 218 230 210 240" className="classic-contour" />
-          <path d="M330 28 C375 35 390 105 369 151 C358 174 342 190 310 214 C302 220 302 230 310 240" className="classic-contour" />
-          <path d="M210 24 Q260 4 310 24 M210 24 L210 214 M310 24 L310 214" className="classic-contour" />
-          <line x1="154" y1="82" x2="366" y2="82" className="classic-divider" />
-          <line x1="154" y1="140" x2="366" y2="140" className="classic-divider" />
-          <line x1="154" y1="198" x2="366" y2="198" className="classic-divider" />
-          <text x="230" y="70" className="classic-blue">{String(intellectual.right).padStart(2, "0")}</text><text x="290" y="70" className="classic-blue">{String(intellectual.left).padStart(2, "0")}</text>
-          <text x="230" y="128" className="classic-green">{String(emotional.right).padStart(2, "0")}</text><text x="290" y="128" className="classic-green">{String(emotional.left).padStart(2, "0")}</text>
-          <text x="230" y="186" className="classic-red">{String(physical.right).padStart(2, "0")}</text><text x="290" y="186" className="classic-red">{String(physical.left).padStart(2, "0")}</text>
-          <path d="M155 45 C128 92 132 145 166 188" className="classic-arrow" markerEnd="url(#contour-arrow)" /><path d="M365 45 C392 92 388 145 354 188" className="classic-arrow" markerEnd="url(#contour-arrow)" />
-          <rect x="36" y="84" width="82" height="36" className="sum-box" /><text x="77" y="108" textAnchor="middle" className="sum-text">{result.rightBrain}</text><text x="78" y="72" textAnchor="middle" className="side-label">Jobb</text><text x="78" y="84" textAnchor="middle" className="side-label">agyfélteke</text>
-          <rect x="402" y="84" width="82" height="36" className="sum-box" /><text x="443" y="108" textAnchor="middle" className="sum-text">{result.leftBrain}</text><text x="442" y="72" textAnchor="middle" className="side-label">Bal</text><text x="442" y="84" textAnchor="middle" className="side-label">agyfélteke</text>
-          <path d="M210 214 C170 250 125 268 125 365 C125 458 185 500 260 500 C335 500 395 458 395 365 C395 268 350 250 310 214" className="classic-contour" />
-          <path d="M196 235 C155 275 145 315 145 370 C145 438 190 468 260 480 C330 468 375 438 375 370 C375 315 365 275 324 235" className="classic-inner" />
-          <text x="260" y="272" textAnchor="middle" className="classic-green">{String(emotional.left).padStart(2, "0")}</text><text x="260" y="338" textAnchor="middle" className="classic-green">{String(emotional.right).padStart(2, "0")}</text><text x="260" y="404" textAnchor="middle" className="classic-red">{String(physical.left).padStart(2, "0")}</text><text x="260" y="462" textAnchor="middle" className="classic-red">{String(physical.right).padStart(2, "0")}</text>
-          <path d="M172 250 C120 300 120 410 166 448" className="classic-arrow" markerEnd="url(#contour-arrow)" /><path d="M348 250 C400 300 400 410 354 448" className="classic-arrow" markerEnd="url(#contour-arrow)" />
-          <rect x="24" y="360" width="82" height="36" className="sum-box" /><text x="65" y="384" textAnchor="middle" className="sum-text">{result.leftBrain}</text><text x="65" y="414" textAnchor="middle" className="side-label">a test</text><text x="65" y="428" textAnchor="middle" className="side-label">jobb oldala</text>
-          <rect x="414" y="360" width="82" height="36" className="sum-box" /><text x="455" y="384" textAnchor="middle" className="sum-text">{result.rightBrain}</text><text x="455" y="414" textAnchor="middle" className="side-label">a test</text><text x="455" y="428" textAnchor="middle" className="side-label">bal oldala</text>
-          <text x="260" y="530" textAnchor="middle" className="total-text">{result.total}</text>
+          <path d="M260 18 C206 18 178 55 178 112 C178 164 202 195 260 222 C318 195 342 164 342 112 C342 55 314 18 260 18 Z" className="classic-contour" />
+          <path d="M178 78 C208 80 232 80 260 80 C288 80 312 80 342 78" className="classic-divider" />
+          <path d="M180 126 C210 128 234 128 260 128 C286 128 310 128 340 126" className="classic-divider" />
+          <path d="M182 174 C210 176 236 176 260 176 C284 176 310 176 338 174" className="classic-divider" />
+          <line x1="260" y1="20" x2="260" y2="222" className="classic-divider" />
+          <text x="226" y="61" textAnchor="middle" className="classic-blue">{String(intellectual.right).padStart(2, "0")}</text><text x="294" y="61" textAnchor="middle" className="classic-blue">{String(intellectual.left).padStart(2, "0")}</text>
+          <text x="226" y="109" textAnchor="middle" className="classic-green">{String(emotional.right).padStart(2, "0")}</text><text x="294" y="109" textAnchor="middle" className="classic-green">{String(emotional.left).padStart(2, "0")}</text>
+          <text x="226" y="157" textAnchor="middle" className="classic-red">{String(physical.right).padStart(2, "0")}</text><text x="294" y="157" textAnchor="middle" className="classic-red">{String(physical.left).padStart(2, "0")}</text>
+          <path d="M158 38 C120 82 122 151 190 207" className="classic-arrow" markerEnd="url(#contour-arrow)" /><path d="M362 38 C400 82 398 151 330 207" className="classic-arrow classic-arrow-heavy" markerEnd="url(#contour-arrow)" />
+          <rect x="30" y="82" width="82" height="36" className="sum-box" /><text x="71" y="106" textAnchor="middle" className="sum-text">{result.rightBrain}</text><text x="71" y="64" textAnchor="middle" className="side-label">Jobb</text><text x="71" y="76" textAnchor="middle" className="side-label">agyfélteke</text>
+          <rect x="408" y="82" width="82" height="36" className="sum-box" /><text x="449" y="106" textAnchor="middle" className="sum-text">{result.leftBrain}</text><text x="449" y="64" textAnchor="middle" className="side-label">Bal</text><text x="449" y="76" textAnchor="middle" className="side-label">agyfélteke</text>
+          <path d="M260 222 C204 252 146 290 146 384 C146 474 194 526 260 526 C326 526 374 474 374 384 C374 290 316 252 260 222 Z" className="classic-contour" />
+          <text x="260" y="285" textAnchor="middle" className="classic-green">{String(emotional.left).padStart(2, "0")}</text>
+          <text x="260" y="350" textAnchor="middle" className="classic-green">{String(emotional.right).padStart(2, "0")}</text>
+          <text x="260" y="415" textAnchor="middle" className="classic-red">{String(physical.left).padStart(2, "0")}</text>
+          <text x="260" y="480" textAnchor="middle" className="classic-red">{String(physical.right).padStart(2, "0")}</text>
+          <path d="M186 246 C94 298 92 448 134 505" className="classic-arrow classic-arrow-heavy" markerEnd="url(#contour-arrow)" /><path d="M334 246 C426 298 428 448 386 505" className="classic-arrow" markerEnd="url(#contour-arrow)" />
+          <rect x="18" y="380" width="82" height="36" className="sum-box" /><text x="59" y="404" textAnchor="middle" className="sum-text">{result.leftBrain}</text><text x="59" y="434" textAnchor="middle" className="side-label">a test</text><text x="59" y="448" textAnchor="middle" className="side-label">jobb oldala</text>
+          <rect x="420" y="380" width="82" height="36" className="sum-box" /><text x="461" y="404" textAnchor="middle" className="sum-text">{result.rightBrain}</text><text x="461" y="434" textAnchor="middle" className="side-label">a test</text><text x="461" y="448" textAnchor="middle" className="side-label">bal oldala</text>
+          <text x="260" y="550" textAnchor="middle" className="total-text">{result.total}</text>
         </svg>
       </div>
     </div>
@@ -215,7 +216,11 @@ export default function Home() {
               {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>{result.name || "A vizsgált személy"} szöveges elemzése</h3><p>A régi programból származó, ellenőrzött `.dat`-forrásszövegek jelennek meg. Ezek a tipológiai kombináció értelmezései, nem újraszámított állítások.</p>{getDatAnalyses(result.markers).map((analysis) => <article className="dat-analysis" key={analysis.code}><h4>{analysis.code}</h4><p>{analysis.text}</p></article>)}{getDatAnalyses(result.markers).length === 0 && <p>Ehhez a dátumhoz még nincs ellenőrzött .dat-hozzárendelés a webes adatmodellben.</p>}</div></section>}
             </div>
           ) : (
-            <section className="empty-state"><div className="empty-orbit" aria-hidden="true"><span /><span /><span /></div><p className="eyebrow">Várakozó adatlap</p><h2>A számítás eredménye itt jelenik meg.</h2><p>Írd be a nevet és a dátumot, majd indítsd el a számítást.</p></section>
+            <>
+              <section className="empty-state"><div className="empty-orbit" aria-hidden="true"><span /><span /><span /></div><p className="eyebrow">Várakozó adatlap</p><h2>A számítás eredménye itt jelenik meg.</h2><p>Írd be a nevet és a dátumot, majd indítsd el a számítást.</p></section>
+              <section className="result-actions empty-result-actions"><div><span className="eyebrow">05 / kimenet</span><h3>Az adatlap még üres.</h3></div><div className="result-buttons"><button className="primary-action" onClick={handleCalculate}><span>Számítás</span><ChevronRight size={18} /></button><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> nyomtatás</button><button className="secondary-action" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "elemzés bezárása" : "szöveges elemzés"}</button></div></section>
+              {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>Szöveges elemzés</h3><p>A szöveges értelmezéshez előbb add meg a nevet és a születési dátumot, majd indítsd el a számítást.</p></div></section>}
+            </>
           )}
         </section>
       </div>

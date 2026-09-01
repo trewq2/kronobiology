@@ -95,7 +95,7 @@ function TriangleDiagram({ result }: { result: ChronobiologyResult }) {
       </div>
       <div className="triangle-visual">
         <img src={gridBackground} alt="Finom mérőrács" />
-        <svg viewBox="0 0 420 400" role="img" aria-label="Tipológiai Jin–Jang összkép">
+        <svg viewBox="0 0 420 400" role="img" aria-label="Jin–Jang összkép">
           <path d="M210 20 L350 300 H70 Z" className="triangle-outline" />
           <path d="M70 100 H170 L120 200 Z M250 100 H350 L300 200 Z M170 300 H250 L210 390 Z" className="triangle-side" />
           <line x1="145" y1="198" x2="275" y2="198" className="triangle-divider" />
@@ -121,7 +121,7 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
     <section className="matrix-shell">
       <div className="matrix-header">
         <div>
-          <p className="eyebrow">02 / tipológiai mátrix</p>
+          <p className="eyebrow">02 / kronobiológiai mátrix</p>
           <h2>{result.name || "Névtelen vizsgálat"}</h2>
           <p className="muted-copy">Született: {formatDate(result.birthDate)}</p>
         </div>
@@ -130,7 +130,7 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
           <strong>{result.total}</strong>
         </div>
       </div>
-      <div className="matrix-table" role="table" aria-label="Tipológiai marker mátrix">
+      <div className="matrix-table" role="table" aria-label="Kronobiológiai marker mátrix">
         <div className="matrix-row matrix-row-head" role="row">
           <span>Marker</span><span>Jobb agyfélteke</span><span>Bal agyfélteke</span><span>Szint</span>
         </div>
@@ -191,7 +191,7 @@ export default function Home() {
       <header className="topbar">
         <div className="brand-lockup">
           <img className="brand-mark" src={logoAsset} alt="" />
-          <div><span className="brand-kicker">KRONO / 01</span><strong>Tipológia</strong></div>
+          <div><span className="brand-kicker">KRONO / 01</span><strong>Kronobiologiai számítás</strong></div>
         </div>
         <div className="topbar-note"><span className="live-dot" /> helyben számolva · nincs feltöltés</div>
       </header>
@@ -199,7 +199,7 @@ export default function Home() {
       <div className="app-grid">
         <section className="workspace">
           <div className="input-panel">
-            <div className="input-panel-header"><div><span className="eyebrow">Személyi adatlap</span><h2>Kihez tartozik a tipológia?</h2></div><span className="input-code">KRB–{birthDate ? birthDate.slice(0, 4) : "0000"}</span></div>
+            <div className="input-panel-header"><div><span className="eyebrow">Személyi adatlap</span><h2>Személy adatainak megadása</h2></div><span className="input-code">KRB–{birthDate ? birthDate.slice(0, 4) : "0000"}</span></div>
             <div className="form-grid">
               <label className="field-wrap"><span>Név</span><input value={name} onChange={(event) => setName(event.target.value)} placeholder="Például: Nagy Zsolt" autoComplete="name" /></label>
               <label className="field-wrap"><span>Születési dátum</span><div className="date-input-wrap"><CalendarDays size={18} /><input type="date" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} aria-describedby="date-help" /></div><small id="date-help">A forrástáblázat időtartománya: 1800–2020 · {dateMeta}</small></label>
@@ -212,8 +212,8 @@ export default function Home() {
             <div className="results-stack">
               <MatrixCard result={result} />
               <div className="diagram-grid"><ContourDiagram result={result} /><TriangleDiagram result={result} /></div>
-              <section className="result-actions"><div><span className="eyebrow">05 / kimenet</span><h3>A tipológia menthető és nyomtatható.</h3></div><div className="result-buttons"><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> nyomtatás</button><button className="secondary-action" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "elemzés bezárása" : "szöveges elemzés"}</button></div></section>
-              {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>{result.name || "A vizsgált személy"} szöveges elemzése</h3><p>A régi programból származó, ellenőrzött `.dat`-forrásszövegek jelennek meg. Ezek a tipológiai kombináció értelmezései, nem újraszámított állítások.</p>{getDatAnalyses(result.markers).map((analysis) => <article className="dat-analysis" key={analysis.code}><h4>{analysis.code}</h4><p>{analysis.text}</p></article>)}{getDatAnalyses(result.markers).length === 0 && <p>Ehhez a dátumhoz még nincs ellenőrzött .dat-hozzárendelés a webes adatmodellben.</p>}</div></section>}
+              <section className="result-actions"><div><span className="eyebrow">05 / kimenet</span><h3>A kronobiológia menthető és nyomtatható.</h3></div><div className="result-buttons"><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> nyomtatás</button><button className="secondary-action" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "elemzés bezárása" : "szöveges elemzés"}</button></div></section>
+              {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>{result.name || "A vizsgált személy"} szöveges elemzése</h3><p>A régi programból származó, ellenőrzött `.dat`-forrásszövegek jelennek meg. Ezek a kronobiológiai kombináció értelmezései, nem újraszámított állítások.</p>{getDatAnalyses(result.markers).map((analysis) => <article className="dat-analysis" key={analysis.code}><h4>{analysis.code}</h4><p>{analysis.text}</p></article>)}{getDatAnalyses(result.markers).length === 0 && <p>Ehhez a dátumhoz még nincs ellenőrzött .dat-hozzárendelés a webes adatmodellben.</p>}</div></section>}
             </div>
           ) : (
             <>
@@ -224,7 +224,7 @@ export default function Home() {
           )}
         </section>
       </div>
-      <footer className="app-footer"><span>KRONO / 01</span><span>tipológiai számítás · böngészőben</span><span>© 2026</span></footer>
+      <footer className="app-footer"><span>KRONO / 01</span><span>Kronobiológiai számítás · böngészőben</span><span>© 2026</span></footer>
     </main>
   );
 }

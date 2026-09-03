@@ -211,6 +211,8 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(40, 58, 138,
 .svg-blue { fill: #283a8a; font-family: "IBM Plex Mono", monospace; font-size: 19px; font-weight: 600; } .svg-green { fill: #218c7a; font-family: "IBM Plex Mono", monospace; font-size: 18px; font-weight: 600; } .svg-red { fill: #d94b4b; font-family: "IBM Plex Mono", monospace; font-size: 20px; font-weight: 600; }
 .svg-caption { fill: #1c2430; font-family: "IBM Plex Mono", monospace; font-size: 11px; } .svg-caption-value { fill: #1c2430; font-family: "IBM Plex Mono", monospace; font-size: 18px; font-weight: 700; }
 .triangle-note { padding: .9rem 1.25rem 1.1rem; color: #69717c; font-size: .7rem; line-height: 1.4; }
+.triangle-symbol { display: flex; align-items: center; justify-content: center; min-height: 4.25rem; padding: .45rem 0 .75rem; }
+.triangle-symbol img { width: 3.2rem; height: 3.2rem; object-fit: contain; opacity: .86; mix-blend-mode: multiply; }
 
 .result-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; padding: 1.25rem 1.35rem; border-left: 3px solid #283a8a; background: #e9ebe8; }
 .result-actions h3 { font-size: 1.1rem; }

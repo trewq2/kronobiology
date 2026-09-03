@@ -15,7 +15,6 @@ import { getDatAnalyses } from "@/lib/datAnalyses";
 
 const orbitBackground = "/manus-storage/kronobiologia-orbit-bg_7e5e1ac8.png";
 const contourBackground = "/manus-storage/kronobiologia-contour-bg_bfb36759.png";
-const gridBackground = "/manus-storage/kronobiologia-grid-bg_9ac53615.png";
 const logoAsset = "/manus-storage/kronobiologia-mark_a0b7cc0c.png";
 
 const levelStyles: Record<LevelKey, { text: string; bg: string; line: string; soft: string }> = {
@@ -94,7 +93,6 @@ function TriangleDiagram({ result }: { result: ChronobiologyResult }) {
         <Sparkles size={18} strokeWidth={1.5} />
       </div>
       <div className="triangle-visual">
-        <img src={gridBackground} alt="Finom mérőrács" />
         <svg viewBox="0 0 420 400" role="img" aria-label="Jin–Jang összkép">
           <path d="M210 20 L350 300 H70 Z" className="triangle-outline" />
           <path d="M70 100 H170 L120 200 Z M250 100 H350 L300 200 Z M170 300 H250 L210 390 Z" className="triangle-side" />
@@ -111,7 +109,9 @@ function TriangleDiagram({ result }: { result: ChronobiologyResult }) {
           <text x="225" y="224" textAnchor="middle" className="svg-caption-value">{result.jang}</text>
         </svg>
       </div>
-      <div className="triangle-note">Jin: {result.jin} · Jang: {result.jang}. A háromszög a klasszikus program szerinti összképet mutatja.</div>
+      <div className="triangle-symbol" aria-label="Jin–Jang jel">
+        <img src={logoAsset} alt="Jin–Jang jel" />
+      </div>
     </div>
   );
 }

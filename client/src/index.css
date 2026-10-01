@@ -91,7 +91,7 @@ button { -webkit-tap-highlight-color: transparent; }
 button:focus-visible, input:focus-visible { outline: 3px solid rgba(40, 58, 138, 0.25); outline-offset: 3px; }
 
 .app-shell { position: relative; min-height: 100vh; overflow: hidden; background: #f3f4f1; }
-.background-orbit { position: absolute; z-index: 0; right: -7rem; top: 4rem; width: min(62vw, 920px); height: 600px; background: url("/manus-storage/kronobiologia-orbit-bg_7e5e1ac8.png") center/cover no-repeat; opacity: .42; pointer-events: none; mix-blend-mode: multiply; }
+.background-orbit { position: absolute; z-index: 0; right: -7rem; top: 4rem; width: min(62vw, 920px); height: 600px; background: radial-gradient(ellipse at center, #e6ebff 0%, transparent 68%); opacity: .42; pointer-events: none; mix-blend-mode: multiply; }
 .topbar, .app-grid, .app-footer { position: relative; z-index: 1; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; max-width: 1500px; margin: 0 auto; padding: 1.35rem clamp(1.25rem, 4vw, 4.5rem); border-bottom: 1px solid rgba(28,36,48,.16); }
 .brand-lockup { display: flex; align-items: center; gap: .85rem; }

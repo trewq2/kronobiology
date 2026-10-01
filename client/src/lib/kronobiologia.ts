@@ -61,35 +61,6 @@ const levelMeta: Record<LevelKey, Omit<LevelResult, "marker" | "right" | "left">
   },
 };
 
-// A régi program normatív táblázatának a mellékelt képernyőképeken és a csomag
-// kronobiológiai tanulmányában egyértelműen azonosítható sorai.
-const knownProfiles: Record<LevelKey, Record<number, { right: number; left: number; label: string }>> = {
-  physical: {
-    4: { right: 50, left: 72, label: "kolerikus" },
-    13: { right: 40, left: 61, label: "Közepes-szangvinikus" },
-    15: { right: 40, left: 28, label: "melankólikus" },
-    18: { right: 10, left: 45, label: "érzékeny-kolerikus" },
-  },
-  emotional: {
-    8: { right: 6, left: 23, label: "hideg" },
-    11: { right: 18, left: 50, label: "önfeláldozó" },
-    12: { right: 44, left: 59, label: "empatikus" },
-    23: { right: 69, left: 59, label: "egoisztikus-vezető" },
-  },
-  intellectual: {
-    4: { right: 93, left: 82, label: "produktív-vegyes" },
-    13: { right: 14, left: 71, label: "gondolkodó" },
-    15: { right: 78, left: 65, label: "produktív-vegyes" },
-    19: { right: 26, left: 71, label: "gondolkodó" },
-  },
-};
-
-const fallbackLabels: Record<LevelKey, string[]> = {
-  physical: ["flegmatikus", "szangvinikus", "kolerikus", "érzékeny"],
-  emotional: ["visszafogott", "kiegyensúlyozott", "meleg", "érzékeny"],
-  intellectual: ["gondolkodó", "gyakorlati gondolkodó", "művészi", "produktív-vegyes"],
-};
-
 function parseDate(value: string): Date | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) return null;
@@ -115,45 +86,25 @@ function cycleMarker(delta: number, period: number, epochMarker: number): number
   return ((epochMarker - 1 - delta) % period + period) % period + 1;
 }
 
-function fallbackProfile(level: LevelKey, marker: number) {
-  const seeds: Record<LevelKey, [number, number]> = {
-    physical: [62, 37],
-    emotional: [31, 54],
-    intellectual: [48, 64],
-  };
-  const [baseRight, baseLeft] = seeds[level];
-  const right = Math.max(4, Math.min(96, Math.round(baseRight + Math.sin(marker * 1.71) * 23)));
-  const left = Math.max(4, Math.min(96, Math.round(baseLeft + Math.cos(marker * 1.19) * 25)));
-  let label = fallbackLabels[level][marker % fallbackLabels[level].length];
-  if (level === "intellectual") {
-    if ([4, 15, 17, 20, 32].includes(marker)) label = "produktív-vegyes";
-    if ([8, 9, 18, 22, 31].includes(marker)) label = "gyakorlati gondolkodó";
-    if ([2, 3, 6, 11, 13, 19, 21, 25, 29, 33].includes(marker)) label = "gondolkodó";
-  }
-  return { right, left, label };
-}
-
 function profileFor(level: LevelKey, marker: number) {
-  const normative = normativeProfiles[level][marker];
-  const legacy = knownProfiles[level][marker];
-  if (normative) return { ...normative, label: legacy?.label ?? normative.label };
-  return legacy ?? fallbackProfile(level, marker);
+  const profile = normativeProfiles[level][marker];
+  // Hiányzó forrásadat helyett nem készítünk mesterséges százalékértékeket.
+  if (!profile) throw new Error(`Hiányzó markerprofil: ${level}/${marker}`);
+  return profile;
 }
 
 export function calculateChronobiology(name: string, birthDate: string): ChronobiologyResult | null {
   const date = parseDate(birthDate);
-  if (!date) return null;
+  if (!date || validateBirthDate(birthDate)) return null;
   const epoch = parseDate(EPOCH)!;
   const delta = dayDifference(date, epoch);
-  const markers: Record<LevelKey, number> = birthDate === "1980-02-21"
-    ? { physical: 18, emotional: 8, intellectual: 15 }
-    : birthDate === "1973-04-10"
-      ? { physical: 13, emotional: 23, intellectual: 19 }
-      : {
-          physical: cycleMarker(delta, PERIODS.physical, 23),
-          emotional: cycleMarker(delta, PERIODS.emotional, 6),
-          intellectual: cycleMarker(delta, PERIODS.intellectual, 27),
-        };
+  // Az eredeti napi táblázat szerint 1999.01.01.: 23 / 6 / 27.
+  // Minden dátum ugyanazt a képletet használja; nincsenek dátumkivételek.
+  const markers: Record<LevelKey, number> = {
+    physical: cycleMarker(delta, PERIODS.physical, 23),
+    emotional: cycleMarker(delta, PERIODS.emotional, 6),
+    intellectual: cycleMarker(delta, PERIODS.intellectual, 27),
+  };
 
   const levels: LevelResult[] = (["physical", "emotional", "intellectual"] as LevelKey[]).map((key) => {
     const profile = profileFor(key, markers[key]);

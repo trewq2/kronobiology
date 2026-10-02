@@ -1,8 +1,7 @@
-// Digitális műszerfal irány: aszimmetrikus, világos adatlelet, fekete szerkesztői vonalak,
-// mély indigó márkaszín és következetes kék–zöld–piros szintkód.
+// Világos, reszponzív adatlap, következetes fizikai–érzelmi–intellektuális színkóddal.
 
 import { useMemo, useState } from "react";
-import { CalendarDays, ChevronRight, CircleHelp, FileText, Printer, RotateCcw, Sparkles } from "lucide-react";
+import { CalendarDays, ChevronRight, FileText, Printer, RotateCcw, Sparkles, ShieldCheck } from "lucide-react";
 import {
   calculateChronobiology,
   formatDate,
@@ -29,7 +28,7 @@ function MetricTag({ value, level }: { value: number; level: LevelKey }) {
 function LevelPill({ level }: { level: LevelResult }) {
   const style = levelStyles[level.key];
   return (
-    <span className={`inline-flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] ${style.soft} ${style.text}`}>
+    <span className={`level-pill ${style.soft} ${style.text}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${style.line}`} />
       {level.label}
     </span>
@@ -43,8 +42,7 @@ function ContourDiagram({ result }: { result: ChronobiologyResult }) {
   return (
     <div className="diagram-card contour-card">
       <div className="diagram-heading">
-        <div><p className="eyebrow">03 / kontúr</p><h3>Agyfélteke- és testkontúr</h3></div>
-        <CircleHelp size={18} strokeWidth={1.5} />
+        <div><p className="eyebrow">03 · Kontúr</p><h3>Agyfélteke- és testkontúr</h3></div>
       </div>
       <div className="contour-visual contour-classic">
         <svg viewBox="0 0 520 570" role="img" aria-label="Eredeti program szerinti agyfélteke- és testkontúr">
@@ -85,7 +83,7 @@ function TriangleDiagram({ result }: { result: ChronobiologyResult }) {
     <div className="diagram-card triangle-card">
       <div className="diagram-heading">
         <div>
-          <p className="eyebrow">04 / egyensúly</p>
+          <p className="eyebrow">04 · Egyensúly</p>
           <h3>Jin–Jang összkép</h3>
         </div>
         <Sparkles size={18} strokeWidth={1.5} />
@@ -107,9 +105,7 @@ function TriangleDiagram({ result }: { result: ChronobiologyResult }) {
           <text x="225" y="224" textAnchor="middle" className="svg-caption-value">{result.jang}</text>
         </svg>
       </div>
-      <div className="triangle-symbol" aria-label="Jin–Jang jel">
-        <img src={logoAsset} alt="Jin–Jang jel" />
-      </div>
+      <div className="diagram-legend" aria-label="Színjelölések"><span className="legend-physical">Fizikai</span><span className="legend-emotional">Érzelmi</span><span className="legend-intellectual">Intellektuális</span></div>
     </div>
   );
 }
@@ -119,7 +115,7 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
     <section className="matrix-shell">
       <div className="matrix-header">
         <div>
-          <p className="eyebrow">02 / kronobiológiai mátrix</p>
+          <p className="eyebrow">02 · Személyes összkép</p>
           <h2>{result.name || "Névtelen vizsgálat"}</h2>
           <p className="muted-copy">Született: {formatDate(result.birthDate)}</p>
         </div>
@@ -130,18 +126,18 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
       </div>
       <div className="matrix-table" role="table" aria-label="Kronobiológiai marker mátrix">
         <div className="matrix-row matrix-row-head" role="row">
-          <span>Marker</span><span>Jobb agyfélteke</span><span>Bal agyfélteke</span><span>Szint</span>
+          <span role="columnheader">Marker / szint</span><span role="columnheader">Jobb agyfélteke</span><span role="columnheader">Bal agyfélteke</span><span role="columnheader">Típus</span>
         </div>
         {result.levels.map((level) => (
-          <div className="matrix-row" role="row" key={level.key}>
-            <div className="marker-cell"><MetricTag value={level.marker} level={level.key} /><span>{level.label}</span></div>
-            <div className="metric-cell"><strong>{String(level.right).padStart(2, "0")}</strong><span>{level.rightLabel}</span></div>
-            <div className="metric-cell"><strong>{String(level.left).padStart(2, "0")}</strong><span>{level.leftLabel}</span></div>
-            <div className="type-cell"><LevelPill level={level} /><span>{level.key === "physical" ? "temperamentum" : level.key === "emotional" ? "érzelem" : "intellektus"}</span></div>
+          <div className={`matrix-row level-${level.key}`} role="row" key={level.key}>
+            <div className="marker-cell" role="cell"><MetricTag value={level.marker} level={level.key} /><span>{level.key === "physical" ? "Fizikai" : level.key === "emotional" ? "Érzelmi" : "Intellektuális"}<small>{level.key === "physical" ? "Temperamentum" : level.key === "emotional" ? "Érzelem" : "Intellektus"}</small></span></div>
+            <div className="metric-cell" role="cell"><span className="mobile-column-label">Jobb agyfélteke</span><strong>{String(level.right).padStart(2, "0")}</strong><span>{level.rightLabel}</span></div>
+            <div className="metric-cell" role="cell"><span className="mobile-column-label">Bal agyfélteke</span><strong>{String(level.left).padStart(2, "0")}</strong><span>{level.leftLabel}</span></div>
+            <div className="type-cell" role="cell"><LevelPill level={level} /></div>
           </div>
         ))}
         <div className="matrix-row matrix-row-total" role="row">
-          <span>Összeg</span><strong>{result.rightBrain}</strong><strong>{result.leftBrain}</strong><span className="font-mono text-sm">{result.total} pont</span>
+          <span role="cell">Összesen</span><strong role="cell"><span className="mobile-column-label">Jobb agyfélteke</span>{result.rightBrain}</strong><strong role="cell"><span className="mobile-column-label">Bal agyfélteke</span>{result.leftBrain}</strong><span role="cell" className="total-points">{result.total} pont</span>
         </div>
       </div>
     </section>
@@ -185,44 +181,41 @@ export default function Home() {
 
   return (
     <main className="app-shell">
-      <div className="background-orbit" aria-hidden="true" />
+
       <header className="topbar">
         <div className="brand-lockup">
           <img className="brand-mark" src={logoAsset} alt="" />
-          <div><span className="brand-kicker">KRONO / 01</span><strong>Kronobiológiai számítás</strong></div>
+          <div><strong>krono<span className="brand-period">.</span></strong><span className="brand-kicker">Kronobiológiai számítás</span></div>
         </div>
-        <div className="topbar-note"><span className="live-dot" /> helyben számolva · nincs feltöltés</div>
+        <div className="topbar-note"><ShieldCheck size={16} aria-hidden="true" /><span>Az adataid a böngésződben maradnak</span></div>
       </header>
 
       <div className="app-grid">
         <section className="workspace">
-          <div className="input-panel">
-            <div className="input-panel-header"><div><span className="eyebrow">Személyi adatlap</span><h2>Személy adatainak megadása</h2></div><span className="input-code">KRB–{birthDate ? birthDate.slice(0, 4) : "0000"}</span></div>
+          <div className="page-intro"><p className="eyebrow">Fizikai · Érzelmi · Intellektuális</p><h1>Kronobiológiai adatlap</h1><p>Három szint. Egy áttekinthető összkép.</p></div>
+          <form className="input-panel" onSubmit={(event) => { event.preventDefault(); handleCalculate(); }} noValidate>
+            <div className="input-panel-header"><div><span className="eyebrow">01 · Személyes adatok</span><h2>Kezdjük az alapokkal</h2><span className="input-code">KRB–{birthDate ? birthDate.slice(0, 4) : "0000"}</span></div></div>
             <div className="form-grid">
-              <label className="field-wrap"><span>Név</span><input value={name} onChange={(event) => setName(event.target.value)} placeholder="Például: Nagy Zsolt" autoComplete="name" /></label>
-              <label className="field-wrap"><span>Születési dátum</span><div className="date-input-wrap"><CalendarDays size={18} /><input type="date" min="1800-01-01" max="2020-12-31" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} aria-describedby="date-help" /></div><small id="date-help">A forrástáblázat időtartománya: 1800–2020 · {dateMeta}</small></label>
+              <label className="field-wrap"><span>Név</span><input value={name} onChange={(event) => setName(event.target.value)} placeholder="Teljes név" autoComplete="name" required /></label>
+              <label className="field-wrap"><span>Születési dátum</span><div className="date-input-wrap"><CalendarDays size={18} /><input type="date" required min="1800-01-01" max="2020-12-31" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} aria-describedby="date-help" /></div><small id="date-help">A forrástáblázat időtartománya: 1800–2020 · {dateMeta}</small></label>
             </div>
             {error && <div className="form-error" role="alert">{error}</div>}
-            <div className="form-actions"><button className="primary-action" onClick={handleCalculate}><span>Számítás</span><ChevronRight size={18} /></button><button className="quiet-action" onClick={handleReset}><RotateCcw size={16} /> új adatlap</button></div>
-          </div>
+            <div className="form-actions"><button type="submit" className="primary-action"><span>Adatlap elkészítése</span><ChevronRight size={18} /></button><button type="button" className="quiet-action" onClick={handleReset}><RotateCcw size={16} /> Új adatlap</button></div>
+          </form>
 
           {result ? (
-            <div className="results-stack">
+            <div className="results-stack" aria-live="polite">
               <MatrixCard result={result} />
               <div className="diagram-grid"><ContourDiagram result={result} /><TriangleDiagram result={result} /></div>
-              <section className="result-actions"><div><span className="eyebrow">05 / kimenet</span><h3>A kronobiológia menthető és nyomtatható.</h3></div><div className="result-buttons"><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> nyomtatás</button><button className="secondary-action" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "elemzés bezárása" : "szöveges elemzés"}</button></div></section>
-              {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>{result.name || "A vizsgált személy"} szöveges elemzése</h3><p>Az alábbi történeti szövegek az eredeti program fizikai–érzelmi és fizikai–intellektuális típuskombinációihoz tartoznak. A módszer nem orvosi vagy pszichológiai diagnózis; a forrásszövegek egészségi állításai nem tekinthetők személyre szóló egészségügyi tanácsnak.</p>{getDatAnalyses(result.markers).map((analysis) => <article className="dat-analysis" key={analysis.code}><h4>{analysis.code}</h4><p>{analysis.text}</p></article>)}{getDatAnalyses(result.markers).length === 0 && <p>A megadott markerekhez nem található elemzés.</p>}</div></section>}
+              <section className="result-actions"><div><span className="eyebrow">05 · További részletek</span><h3>Vidd magaddal az adatlapod</h3></div><div className="result-buttons"><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> Nyomtatás / PDF</button><button className="secondary-action analysis-toggle" aria-expanded={showAnalysis} aria-controls="text-analysis" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "Elemzés bezárása" : "Szöveges elemzés"}</button></div></section>
+              {showAnalysis && <section className="analysis-panel" id="text-analysis"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>{result.name || "A vizsgált személy"} szöveges elemzése</h3><p>Az alábbi történeti szövegek az eredeti program fizikai–érzelmi és fizikai–intellektuális típuskombinációihoz tartoznak. A módszer nem orvosi vagy pszichológiai diagnózis; a forrásszövegek egészségi állításai nem tekinthetők személyre szóló egészségügyi tanácsnak.</p>{getDatAnalyses(result.markers).map((analysis) => <article className="dat-analysis" key={analysis.code}><h4>{analysis.code}</h4><p>{analysis.text}</p></article>)}{getDatAnalyses(result.markers).length === 0 && <p>A megadott markerekhez nem található elemzés.</p>}</div></section>}
             </div>
           ) : (
-            <>
-              <section className="empty-state"><div className="empty-orbit" aria-hidden="true"><span /><span /><span /></div><p className="eyebrow">Várakozó adatlap</p><h2>A számítás eredménye itt jelenik meg.</h2><p>Írd be a nevet és a dátumot, majd indítsd el a számítást.</p></section>
-              <section className="result-actions empty-result-actions"><div><span className="eyebrow">05 / kimenet</span><h3>Az adatlap még üres.</h3></div><div className="result-buttons"><button className="primary-action" onClick={handleCalculate}><span>Számítás</span><ChevronRight size={18} /></button><button className="secondary-action" onClick={() => window.print()}><Printer size={16} /> nyomtatás</button><button className="secondary-action" onClick={() => setShowAnalysis((value) => !value)}><FileText size={16} /> {showAnalysis ? "elemzés bezárása" : "szöveges elemzés"}</button></div></section>
-              {showAnalysis && <section className="analysis-panel"><div className="analysis-mark"><span>DAT</span><Sparkles size={18} /></div><div><p className="eyebrow">Szöveges értelmezés</p><h3>Szöveges elemzés</h3><p>A szöveges értelmezéshez előbb add meg a nevet és a születési dátumot, majd indítsd el a számítást.</p></div></section>}
-            </>
+            <section className="empty-state"><div className="empty-orbit" aria-hidden="true"><span /><span /><span /></div><div><p className="eyebrow">A te személyes összképed</p><h2>Itt rajzolódik ki az adatlapod.</h2><p>Add meg a neved és a születési dátumod a számításhoz.</p></div></section>
           )}
         </section>
       </div>
-      <footer className="app-footer"><span>KRONO / 01</span><span>Kronobiológiai számítás · böngészőben</span><span>© 2026</span></footer>
+      <footer className="app-footer"><span>krono.</span><span>Személyes adatlap · Helyben számolva</span><span>© 2026</span></footer>
     </main>
   );
 }

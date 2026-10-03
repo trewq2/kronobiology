@@ -25,6 +25,12 @@ function MetricTag({ value, level }: { value: number; level: LevelKey }) {
   return <span className={`metric-tag ${style.text} ${style.bg}`}>{String(value).padStart(2, "0")}</span>;
 }
 
+const levelCaptions: Record<LevelKey, { contour: string; description: string[] }> = {
+  physical: { contour: "Fizikai kontúr", description: ["temperamentum", "idegrendszer ereje"] },
+  emotional: { contour: "Érzelmi kontúr", description: ["érzések", "adaptáció, integráció"] },
+  intellectual: { contour: "Intellektuális kontúr", description: ["intuíció és logika", "teljesség és felosztottság"] },
+};
+
 function LevelPill({ level }: { level: LevelResult }) {
   const style = levelStyles[level.key];
   return (
@@ -126,14 +132,14 @@ function MatrixCard({ result }: { result: ChronobiologyResult }) {
       </div>
       <div className="matrix-table" role="table" aria-label="Kronobiológiai marker mátrix">
         <div className="matrix-row matrix-row-head" role="row">
-          <span role="columnheader">Marker / szint</span><span role="columnheader">Jobb agyfélteke</span><span role="columnheader">Bal agyfélteke</span><span role="columnheader">Típus</span>
+          <span role="columnheader">Markerek / szint</span><span role="columnheader">Jobb agyfélteke</span><span role="columnheader">Bal agyfélteke</span><span role="columnheader">Típus</span>
         </div>
         {result.levels.map((level) => (
           <div className={`matrix-row level-${level.key}`} role="row" key={level.key}>
-            <div className="marker-cell" role="cell"><MetricTag value={level.marker} level={level.key} /><span>{level.key === "physical" ? "Fizikai" : level.key === "emotional" ? "Érzelmi" : "Intellektuális"}<small>{level.key === "physical" ? "Temperamentum" : level.key === "emotional" ? "Érzelem" : "Intellektus"}</small></span></div>
+            <div className="marker-cell" role="cell"><MetricTag value={level.marker} level={level.key} /><span>{levelCaptions[level.key].contour}</span></div>
             <div className="metric-cell" role="cell"><span className="mobile-column-label">Jobb agyfélteke</span><strong>{String(level.right).padStart(2, "0")}</strong><span>{level.rightLabel}</span></div>
             <div className="metric-cell" role="cell"><span className="mobile-column-label">Bal agyfélteke</span><strong>{String(level.left).padStart(2, "0")}</strong><span>{level.leftLabel}</span></div>
-            <div className="type-cell" role="cell"><LevelPill level={level} /></div>
+            <div className="type-cell" role="cell"><LevelPill level={level} /><span className="type-description">{levelCaptions[level.key].description.map((line) => <span key={line}>{line}</span>)}</span></div>
           </div>
         ))}
         <div className="matrix-row matrix-row-total" role="row">

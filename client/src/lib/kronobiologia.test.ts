@@ -214,6 +214,23 @@ describe("eredeti források szerinti kronobiológia", () => {
     const result = calculateChronobiology("Teszt", "1980-02-21")!;
     expect(getDatAnalyses(result.markers).map(x => x.code)).toEqual(["114.dat", "244.dat"]);
   });
+  // Referenciák: az eredeti program hat képernyőképe, majd a felhasználó által
+  // jelzett 1993.11.08-i 133.dat / 223.dat fájlpár. A várakozások függetlenek
+  // a webes típusfeliratoktól és a kiválasztófüggvénytől.
+  it.each([
+    ["1983-03-21", "157.dat", "217.dat", "Hipochonder. Nagy érzelmi feszültségek jellemzik."],
+    ["1987-08-04", "125.dat", "215.dat", "A szokásai fontosak számára és nehezen tud megszabadulni tőlük."],
+    ["2001-10-05", "153.dat", "263.dat", "Magas aktivitása kompenzálja az adaptációt."],
+    ["1990-02-14", "117.dat", "247.dat", "Érzékeny, sértődékeny, bosszúálló."],
+    ["1988-05-14", "165.dat", "215.dat", "Alacsony ellenállóképesség."],
+    ["1987-01-05", "147.dat", "217.dat", "Önszerető, nagyon érzékeny."],
+    ["1993-11-08", "133.dat", "223.dat", "Dekoncentráltság jellemzi."],
+  ])("eredeti program szöveges elemzése: %s", (date, first, second, opening) => {
+    const result = calculateChronobiology("Referencia", date)!;
+    const analyses = getDatAnalyses(result.markers);
+    expect(analyses.map(item => item.code)).toEqual([first, second]);
+    expect(analyses[0].text.startsWith(opening)).toBe(true);
+  });
   it("minden érvényes markerhármashoz két létező szöveget ad", () => {
     const used = new Set<string>();
     for (let physical = 1; physical <= 23; physical++) {

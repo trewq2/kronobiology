@@ -6,27 +6,30 @@ export interface DatAnalysis {
   text: string;
 }
 
-// A fájlkód típuspárhoz tartozik, nem egy dátumhoz vagy markerhármashoz.
+// A fájlkód elemzési csoportpárhoz tartozik, nem egy dátumhoz.
 // 1 + érzelmi csoport + fizikai csoport; 2 + intellektuális csoport + fizikai csoport.
-// A tipologia.exe elemzes eljárásának kiválasztótábláiból visszaellenőrizve.
-// A markerbesorolások a profiladatokból és a mellékelt tanulmányból származnak.
-const typeGroups: Record<LevelKey, readonly (readonly number[])[]> = {
+// A csoport NEM vezethető le mindig a megjelenített típus nevéből.
+// A profilokból korábban becsült besorolásokat az eredeti program 2026.10.03-án
+// kapott hat képernyőképe alapján javítottuk: fizikai 4; érzelmi 1, 3, 6, 17, 26.
+// További eredeti referencia: 1993.11.08 → 133.dat / 223.dat; érzelmi 10 → 3.
+// A többi marker besorolását ezek a példák önmagukban nem hitelesítik.
+const analysisGroups: Record<LevelKey, readonly (readonly number[])[]> = {
   physical: [
     [6, 8, 11, 16],       // 1: flegmatikus
     [19, 22],             // 2: flegmatikus-szangvinikus
-    [2, 7, 17],           // 3: szangvinikus
-    [3, 4, 12, 14, 21],   // 4: kolerikus
+    [2, 4, 7, 17],        // 3
+    [3, 12, 14, 21],      // 4
     [1, 5, 10, 13, 20],   // 5: közepesen szangvinikus
     [18],                 // 6: érzékeny kolerikus
     [9, 15, 23],          // 7: melankolikus
   ],
   emotional: [
-    [7, 10, 11, 13],           // 1: önfeláldozó
-    [2, 9, 19, 23],            // 2: egoisztikus vezető
-    [1, 4, 14, 15, 27],        // 3: szenvedélyes
-    [3, 5, 6, 12, 25, 26, 28], // 4: empatikus
-    [16, 17, 20, 21, 24],      // 5: szentimentális
-    [8, 18, 22],               // 6: hideg
+    [1, 7, 11, 13],         // 1
+    [2, 9, 19, 23],         // 2
+    [4, 10, 14, 15, 27],    // 3
+    [5, 12, 17, 25, 28],    // 4
+    [3, 6, 16, 20, 21, 24], // 5
+    [8, 18, 22, 26],        // 6
   ],
   intellectual: [
     [4, 15, 17, 20, 32],                   // 1: produktív vegyes
@@ -40,7 +43,7 @@ const typeGroups: Record<LevelKey, readonly (readonly number[])[]> = {
 };
 
 export function getDatAnalyses(markers: Record<LevelKey, number>): DatAnalysis[] {
-  const group = (key: LevelKey) => typeGroups[key].findIndex((row) => row.includes(markers[key])) + 1;
+  const group = (key: LevelKey) => analysisGroups[key].findIndex((row) => row.includes(markers[key])) + 1;
   const physical = group("physical");
   const emotional = group("emotional");
   const intellectual = group("intellectual");

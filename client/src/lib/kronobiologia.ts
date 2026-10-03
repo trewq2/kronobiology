@@ -41,22 +41,22 @@ const levelMeta: Record<LevelKey, Omit<LevelResult, "marker" | "right" | "left">
   intellectual: {
     key: "intellectual",
     label: "Intellektuális",
-    rightLabel: "intuíció",
+    rightLabel: "fantázia",
     leftLabel: "logika",
     color: "blue",
   },
   emotional: {
     key: "emotional",
     label: "Érzelmi",
-    rightLabel: "adaptáció",
-    leftLabel: "integráció",
+    rightLabel: "fogadás",
+    leftLabel: "adás",
     color: "green",
   },
   physical: {
     key: "physical",
     label: "Fizikai",
-    rightLabel: "fékezés ereje",
-    leftLabel: "inger ereje",
+    rightLabel: "türelem",
+    leftLabel: "aktivitás",
     color: "red",
   },
 };

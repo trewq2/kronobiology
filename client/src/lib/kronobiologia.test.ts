@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateChronobiology, validateBirthDate } from "./kronobiologia";
+import { calculateChronobiology, calculateTableMarkers, validateBirthDate } from "./kronobiologia";
 import { getDatAnalyses } from "./datAnalyses";
 import { datLibrary } from "./datLibrary";
 
@@ -189,7 +189,7 @@ const fixtures: [string, number, number, number][] = [
 
 describe("eredeti források szerinti kronobiológia", () => {
   it.each(fixtures)("napi táblázat: %s", (date, physical, emotional, intellectual) => {
-    expect(calculateChronobiology("Teszt", date)?.markers).toEqual({ physical, emotional, intellectual });
+    expect(calculateTableMarkers(date)).toEqual({ physical, emotional, intellectual });
   });
   it("a tanulmány 1938.05.08-i teljes számpéldája", () => {
     const result = calculateChronobiology("  Teszt  ", "1938-05-08")!;
@@ -210,9 +210,10 @@ describe("eredeti források szerinti kronobiológia", () => {
     expect(getDatAnalyses({ physical: 18, emotional: 8, intellectual: 15 }).map(x => x.code)).toEqual(["166.dat", "216.dat"]);
     expect(getDatAnalyses({ physical: 13, emotional: 23, intellectual: 19 }).map(x => x.code)).toEqual(["125.dat", "245.dat"]);
   });
-  it("az 1980.02.21-i javított markerekhez is ad elemzést", () => {
+  it("az 1980.02.21-i eredeti adatbázismarkerekhez ad elemzést", () => {
     const result = calculateChronobiology("Teszt", "1980-02-21")!;
-    expect(getDatAnalyses(result.markers).map(x => x.code)).toEqual(["114.dat", "244.dat"]);
+    expect(result.markers).toEqual({ physical: 18, emotional: 8, intellectual: 15 });
+    expect(getDatAnalyses(result.markers).map(x => x.code)).toEqual(["166.dat", "216.dat"]);
   });
   // Referenciák: az eredeti program hat képernyőképe, majd a felhasználó által
   // jelzett 1993.11.08-i 133.dat / 223.dat fájlpár. A várakozások függetlenek
@@ -225,11 +226,35 @@ describe("eredeti források szerinti kronobiológia", () => {
     ["1988-05-14", "165.dat", "215.dat", "Alacsony ellenállóképesség."],
     ["1987-01-05", "147.dat", "217.dat", "Önszerető, nagyon érzékeny."],
     ["1993-11-08", "133.dat", "223.dat", "Dekoncentráltság jellemzi."],
+    // Új, független képernyőképek az eredeti programból (2026.10.04.).
+    ["1952-08-22", "115.dat", "265.dat", "Magas kockázat és balesetveszély."],
+    ["1991-03-05", "123.dat", "213.dat", "Nagyon egészséges,"],
+    ["1991-07-06", "162.dat", "272.dat", "Erős temperamentum, hideg érzelem."],
+    ["1998-02-22", "134.dat", "224.dat", "Hős nem adekvált."],
+    ["1992-07-05", "153.dat", "213.dat", "Magas aktivitása kompenzálja az adaptációt."],
   ])("eredeti program szöveges elemzése: %s", (date, first, second, opening) => {
     const result = calculateChronobiology("Referencia", date)!;
     const analyses = getDatAnalyses(result.markers);
     expect(analyses.map(item => item.code)).toEqual([first, second]);
     expect(analyses[0].text.startsWith(opening)).toBe(true);
+  });
+  it("az 1988.01.30-i eredeti képernyőképet dátum alapján reprodukálja", () => {
+    const result = calculateChronobiology("Referencia", "1988-01-30")!;
+    expect(result.markers).toEqual({ physical: 9, emotional: 18, intellectual: 22 });
+    expect(getDatAnalyses(result.markers).map(x => x.code)).toEqual(["167.dat", "217.dat"]);
+  });
+  it("a 2000.01.01-i három képkivágás minden számát és szövegét reprodukálja", () => {
+    const result = calculateChronobiology("Referencia", "2000-01-01")!;
+    expect(result.markers).toEqual({ physical: 2, emotional: 4, intellectual: 24 });
+    expect(result.levels.map(({ right, left }) => [right, left]))
+      .toEqual([[55, 72], [62, 77], [26, 18]]);
+    expect([result.rightBrain, result.leftBrain, result.bodyRight, result.bodyLeft])
+      .toEqual([143, 167, 167, 143]);
+    expect([result.total, result.jin, result.jang]).toEqual([310, 211, 99]);
+    const analyses = getDatAnalyses(result.markers);
+    expect(analyses.map(x => x.code)).toEqual(["113.dat", "273.dat"]);
+    expect(analyses[0].text).toBe("Agresszívitás jellemzi.\nMagas balesetveszély.\nBetegség: túltengéses.");
+    expect(analyses[1].text).toBe("Asztrális programozás.\nMinden fizikai módszert alkalmazhatunk, verbális ráhatás kombinálásával.\nÉrzelmi kapaszkodók lényegesek.");
   });
   it("minden érvényes markerhármashoz két létező szöveget ad", () => {
     const used = new Set<string>();

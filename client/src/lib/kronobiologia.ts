@@ -93,18 +93,35 @@ function profileFor(level: LevelKey, marker: number) {
   return profile;
 }
 
-export function calculateChronobiology(name: string, birthDate: string): ChronobiologyResult | null {
+// A PDF-táblák naptári alapképlete, külön ellenőrzési referenciaként.
+// A termék az eredeti program adatbázisával egyező markereket használja.
+export function calculateTableMarkers(birthDate: string): Record<LevelKey, number> | null {
   const date = parseDate(birthDate);
   if (!date || validateBirthDate(birthDate)) return null;
-  const epoch = parseDate(EPOCH)!;
-  const delta = dayDifference(date, epoch);
-  // Az eredeti napi táblázat szerint 1999.01.01.: 23 / 6 / 27.
-  // Minden dátum ugyanazt a képletet használja; nincsenek dátumkivételek.
-  const markers: Record<LevelKey, number> = {
+  return markersAtDelta(dayDifference(date, parseDate(EPOCH)!));
+}
+
+function markersAtDelta(delta: number): Record<LevelKey, number> {
+  return {
     physical: cycleMarker(delta, PERIODS.physical, 23),
     emotional: cycleMarker(delta, PERIODS.emotional, 6),
     intellectual: cycleMarker(delta, PERIODS.intellectual, 27),
   };
+}
+
+export function calculateChronobiology(name: string, birthDate: string): ChronobiologyResult | null {
+  const date = parseDate(birthDate);
+  if (!date || validateBirthDate(birthDate)) return null;
+  const delta = dayDifference(date, parseDate(EPOCH)!);
+  const year = date.getUTCFullYear();
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  // A BAZIS_ mind a 80 719 rekordjával ellenőrzött tömör leírás.
+  // Szökőév januárja a táblázatos következő nap, februárja a 29 nappal
+  // korábbi nap markerét tárolja. Ez az eredeti program kompatibilitási
+  // szabálya, nem a Gergely-naptár módosítása vagy egyedi dátumkivétel.
+  const databaseShift = leap && date.getUTCMonth() === 0 ? 1
+    : leap && date.getUTCMonth() === 1 ? -29 : 0;
+  const markers = markersAtDelta(delta + databaseShift);
 
   const levels: LevelResult[] = (["physical", "emotional", "intellectual"] as LevelKey[]).map((key) => {
     const profile = profileFor(key, markers[key]);

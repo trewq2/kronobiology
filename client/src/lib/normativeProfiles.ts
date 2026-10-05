@@ -4,12 +4,13 @@ export interface NormativeProfile { right: number; left: number; label: string; 
 export const normativeProfiles: Record<"physical" | "emotional" | "intellectual", Record<number, NormativeProfile>> = 
 {
   physical: {
-    1: { right: 33, left: 55, label: "Közepesen szangvinikus" },
+    1: { right: 35, left: 55, label: "Közepesen szangvinikus" },
     2: { right: 55, left: 72, label: "Szangvinikus" },
     3: { right: 15, left: 65, label: "Kolerikus" },
-    4: { right: 50, left: 72, label: "Kolerikus" },
+    4: { right: 50, left: 72, label: "Szangvinikus" },
     5: { right: 30, left: 41, label: "Közepesen szangvinikus" },
     6: { right: 75, left: 21, label: "Flegmatikus" },
+    // Az eredeti MARKERS.J1 értéke 45/72; az Excel ettől eltér.
     7: { right: 45, left: 72, label: "Szangvinikus" },
     8: { right: 60, left: 22, label: "Flegmatikus" },
     9: { right: 35, left: 28, label: "Melankólikus" },
@@ -54,7 +55,7 @@ export const normativeProfiles: Record<"physical" | "emotional" | "intellectual"
     23: { right: 69, left: 59, label: "Egoisztikus vezető" },
     24: { right: 56, left: 41, label: "Szentimentális" },
     25: { right: 44, left: 68, label: "Empatikus" },
-    26: { right: 37, left: 41, label: "Empatikus" },
+    26: { right: 37, left: 41, label: "Hideg" },
     27: { right: 56, left: 73, label: "Szenvedélyes" },
     28: { right: 44, left: 73, label: "Empatikus" },
   },
@@ -80,7 +81,7 @@ export const normativeProfiles: Record<"physical" | "emotional" | "intellectual"
     19: { right: 26, left: 71, label: "Gondolkodó" },
     20: { right: 99, left: 82, label: "Produktív Vegyes" },
     21: { right: 7, left: 76, label: "Gondolkodó" },
-    22: { right: 14, left: 35, label: "Gyakorlati Gondolkodó" },
+    22: { right: 14, left: 35, label: "Produktív Vegyes" },
     23: { right: 50, left: 65, label: "Produktív Gondolkodó" },
     24: { right: 26, left: 18, label: "Gyakorlati Művészi" },
     25: { right: 29, left: 88, label: "Gondolkodó" },

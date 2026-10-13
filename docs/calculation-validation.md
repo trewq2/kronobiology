@@ -112,9 +112,47 @@ valamint a két DAT-fájl nevét. Eltérés: **0**.
 Továbbra is ellenőrizzük mind a 21 252 markerhármas DAT-választását,
 a 91 szöveg meglétét és a korábbi képi referenciákat. A külön PDF-alapképletet
 18 262 napi sor és 221 év végi alapérték ellen teszteljük; ezek nem az
-alapértelmezett termékeredmény elvárásai. A teljes tesztcsomag 83 tesztből áll.
+alapértelmezett termékeredmény elvárásai.
 
-## Publikálás
+## Dátumtartomány bővítése 2040 végéig – 2026.10.13.
 
-A változat előnézetre készül. GitHub-frissítés csak az új változat
-felhasználói jóváhagyása után történhet.
+A számítható időtartomány 1800.01.01–2040.12.31. A natív dátumválasztó,
+a bemenet ellenőrzése és a tartományfelirat ugyanazokat az évhatárokat
+használja. A marker-, profil- és DAT-számítás változatlan.
+
+Az eredeti adatbázis 2020 végén lezárul: a 2021–2040 közötti eredmények
+az elfogadott képlet folytatásai, nem újonnan kinyert eredeti rekordok.
+A szökőévi január +1 napos és február -29 napos kompatibilitási eltolása
+az új időtartományban is megmarad.
+
+A három periódus 23, 28 és 33 nap. Legkisebb közös többszörösük
+21 252 nap (körülbelül 58,19 év), így a három alapmarker ennyi
+számítási lépés után tér vissza együtt. Négy év általában 1 461 nap;
+ez egyik periódusnak sem egész számú többszöröse. A naptári dátumokra
+alkalmazott szökőévi kompatibilitási eltolás miatt nem minden dátumnál
+pontosan 21 252 naptári nappal később ismétlődik a teljes eredmény.
+Például 1980.03.01. és 2038.05.08. teljes számított adatlapja egyezik,
+1984.03.01. viszont más markereket ad. A csoportosított DAT-szövegek és
+egyes összpontszámok a teljes markerhármasnál gyakrabban is ismétlődhetnek.
+
+Az új tesztek a 2021-es kezdést, 2024 és 2040 szökőnapját, a 2040-es
+január/február/március átmenetet és az utolsó engedélyezett napot vizsgálják.
+A teljes kimeneteket ciklusazonos, az eredeti adatbázisban ellenőrzött
+referenciadátumokkal hasonlítjuk össze. A 2041.01.01. és az érvénytelen
+szökőnapok továbbra sem fogadhatók el.
+
+## Verziómentés és publikálás – 2026.10.13.
+
+A felhasználó a kipróbálható előnézet után jóváhagyta a 2040-ig bővített
+változat közzétételét, és előtte külön mentést kért a működő verzióról.
+
+- Mentési ág: `backup/2026-10-13-before-2040`.
+- Mentett commit: `8d253b4f05782704751aefbc77e52bd6d740f756`.
+- A mentés az 1800–2020 közötti dátumokat kezelő, eredeti programmal egyező verzió.
+- A 2040-es bővítés ellenőrzése: 98 sikeres teszt, sikeres típusellenőrzés és frontend build.
+
+Visszaállításhoz a 2040-es bővítés pull requestjén a `Revert` gombbal
+készíthető visszavonó pull request. Ennek `main` ágba olvasztása után a
+meglévő GitHub Actions folyamat újraellenőrzi és közzéteszi a régi verziót.
+A mentési ág puszta kiválasztása a GitHub fájlnézetében nem módosítja az
+éles oldalt. A mentési ágra ne kerüljenek további fejlesztések.

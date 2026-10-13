@@ -5,6 +5,33 @@ import { calculateChronobiology, calculateTableMarkers, validateBirthDate } from
 // Az éves táblázat év VÉGI alapértéket ad, nem január 1-jei markert.
 describe("szökőévek a forrástáblázatok szerint", () => {
   it.each([
+    ["2021-01-01", "1962-10-26"],
+    ["2024-01-01", "1965-10-26"],
+    ["2024-02-29", "1965-11-24"],
+    ["2040-01-01", "1981-10-26"],
+    ["2040-02-28", "1981-11-23"],
+    ["2040-02-29", "1981-11-24"],
+    ["2040-03-01", "1981-12-24"],
+    ["2040-12-31", "1982-10-25"],
+  ])("2040-ig a meglévő ciklusokat folytatja: %s", (date, referenceDate) => {
+    // A referencia dátumok az eredeti adatbázisban is szerepelnek, ezért
+    // teljes kimenetüket a 80 719 soros regressziós teszt külön ellenőrzi.
+    // Egy 21 252 napos közös ciklust lépünk előre, és megtartjuk az eredeti
+    // szökőévi január/február kompatibilitási eltolását (+1 / -29 nap).
+    const reference = calculateChronobiology("Referencia", referenceDate)!;
+    expect(calculateChronobiology("Referencia", date))
+      .toEqual({ ...reference, birthDate: date });
+  });
+
+  it("a három marker közös alapciklusa 21 252 nap, nem négy év", () => {
+    const reference = calculateChronobiology("Ciklus", "1980-03-01")!;
+    expect(calculateChronobiology("Ciklus", "2038-05-08"))
+      .toEqual({ ...reference, birthDate: "2038-05-08" });
+    expect(calculateChronobiology("Ciklus", "1984-03-01")!.markers)
+      .not.toEqual(reference.markers);
+  });
+
+  it.each([
     ["1995-12-31", 16, 11, 2],
     ["1996-01-01", 15, 10, 1],
     ["1996-02-28", 3, 8, 9],

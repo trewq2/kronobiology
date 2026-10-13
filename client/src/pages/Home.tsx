@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { CalendarDays, ChevronRight, FileText, Printer, RotateCcw, Sparkles, ShieldCheck } from "lucide-react";
 import {
+  MIN_BIRTH_YEAR,
+  MAX_BIRTH_YEAR,
   calculateChronobiology,
   formatDate,
   validateBirthDate,
@@ -203,7 +205,7 @@ export default function Home() {
             <div className="input-panel-header"><div><span className="eyebrow">01 · Személyes adatok</span><h2>Kezdjük az alapokkal</h2><span className="input-code">KRB–{birthDate ? birthDate.slice(0, 4) : "0000"}</span></div></div>
             <div className="form-grid">
               <label className="field-wrap"><span>Név</span><input value={name} onChange={(event) => setName(event.target.value)} placeholder="Teljes név" autoComplete="name" required /></label>
-              <label className="field-wrap"><span>Születési dátum</span><div className="date-input-wrap"><CalendarDays size={18} /><input type="date" required min="1800-01-01" max="2020-12-31" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} aria-describedby="date-help" /></div><small id="date-help">A forrástáblázat időtartománya: 1800–2020 · {dateMeta}</small></label>
+              <label className="field-wrap"><span>Születési dátum</span><div className="date-input-wrap"><CalendarDays size={18} /><input type="date" required min={`${MIN_BIRTH_YEAR}-01-01`} max={`${MAX_BIRTH_YEAR}-12-31`} value={birthDate} onChange={(event) => setBirthDate(event.target.value)} aria-describedby="date-help" /></div><small id="date-help">Számítható időtartomány: {MIN_BIRTH_YEAR}–{MAX_BIRTH_YEAR} · {dateMeta}</small></label>
             </div>
             {error && <div className="form-error" role="alert">{error}</div>}
             <div className="form-actions"><button type="submit" className="primary-action"><span>Adatlap elkészítése</span><ChevronRight size={18} /></button><button type="button" className="quiet-action" onClick={handleReset}><RotateCcw size={16} /> Új adatlap</button></div>

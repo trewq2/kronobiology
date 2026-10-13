@@ -198,11 +198,11 @@ describe("eredeti források szerinti kronobiológia", () => {
     expect([result.rightBrain, result.leftBrain, result.total]).toEqual([161, 204, 365]);
     expect(result.name).toBe("Teszt");
   });
-  it.each(["", "1980-02-30", "1900-02-29", "1980-13-01", "1799-12-31", "2021-01-01"])("hibás vagy tartományon kívüli dátum: %s", (date) => {
+  it.each(["", "1980-02-30", "1900-02-29", "1980-13-01", "1799-12-31", "2041-01-01", "2039-02-29", "2040-02-30"])("hibás vagy tartományon kívüli dátum: %s", (date) => {
     expect(validateBirthDate(date)).not.toBeNull();
     expect(calculateChronobiology("Teszt", date)).toBeNull();
   });
-  it.each(["1800-01-01", "2000-02-29", "2020-12-31"])("érvényes határ / szökőnap: %s", (date) => {
+  it.each(["1800-01-01", "2000-02-29", "2020-12-31", "2021-01-01", "2040-01-01", "2040-02-29", "2040-12-31"])("érvényes határ / szökőnap: %s", (date) => {
     expect(validateBirthDate(date)).toBeNull();
     expect(calculateChronobiology("Teszt", date)).not.toBeNull();
   });

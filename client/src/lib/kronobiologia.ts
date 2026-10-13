@@ -30,6 +30,9 @@ export interface ChronobiologyResult {
   total: number;
 }
 
+export const MIN_BIRTH_YEAR = 1800;
+export const MAX_BIRTH_YEAR = 2040;
+
 const EPOCH = "1999-01-01";
 const PERIODS: Record<LevelKey, number> = {
   physical: 23,
@@ -170,6 +173,8 @@ export function validateBirthDate(value: string): string | null {
   const parsed = parseDate(value);
   if (!parsed) return "Adj meg egy érvényes születési dátumot.";
   const year = parsed.getUTCFullYear();
-  if (year < 1800 || year > 2020) return "A forrásprogram 1800 és 2020 közötti dátumokra készült.";
+  if (year < MIN_BIRTH_YEAR || year > MAX_BIRTH_YEAR) {
+    return `A számítás ${MIN_BIRTH_YEAR} és ${MAX_BIRTH_YEAR} közötti dátumokra érhető el.`;
+  }
   return null;
 }
